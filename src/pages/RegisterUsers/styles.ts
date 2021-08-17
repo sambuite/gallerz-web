@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Card, CardContent } from '@material-ui/core';
+import tw from 'tailwind-styled-components';
 
 export const Container = styled.div(
   ({ theme }) => css`
@@ -9,13 +10,17 @@ export const Container = styled.div(
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    background-image: url('https://source.unsplash.com/collection/12281201');
+    background-image: url('https://source.unsplash.com/collection/857397');
     background-repeat: no-repeat;
     background-position: center;
     background-clip: content-box;
     background-size: cover;
   `,
 );
+
+const ContainerTw = tw(Container)<{ ac: boolean }>`${(props) => `
+  w-full flex flex-wrap
+`}`;
 
 export const StyledCard = styled(Card)(
   ({ theme }) => css`
