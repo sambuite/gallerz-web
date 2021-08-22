@@ -44,7 +44,10 @@ const RegisterUsers = () => {
     <div className="w-full flex flex-wrap">
       <div className="w-full md:w-1/2 flex flex-col">
         <div className="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-12">
-          <a href="#" className="bg-black text-white font-bold text-xl p-4">
+          <a
+            href="#"
+            className="bg-primary-500 text-white font-bold text-xl p-4"
+          >
             GALLERZ
           </a>
         </div>
@@ -59,8 +62,8 @@ const RegisterUsers = () => {
               <input
                 type="text"
                 id="name"
-                placeholder="Lorena Ipsum"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="Seu Nome"
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={handleChangeName}
               />
             </div>
@@ -73,7 +76,7 @@ const RegisterUsers = () => {
                 type="email"
                 id="email"
                 placeholder="seuemail@email.com"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={handleChangeEmail}
               />
             </div>
@@ -86,7 +89,7 @@ const RegisterUsers = () => {
                 type="password"
                 id="password"
                 placeholder="********"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                 onChange={handleChangePassword}
               />
             </div>
@@ -99,20 +102,23 @@ const RegisterUsers = () => {
                 type="password"
                 id="confirm-password"
                 placeholder="********"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div> */}
 
             <input
               type="submit"
-              value="Register"
-              className="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8 cursor-pointer"
+              value="Cadastrar-se"
+              className="bg-primary-500 text-white font-bold text-lg hover:bg-primary-700 p-2 mt-8 cursor-pointer"
             />
           </form>
           <div className="text-center pt-12 pb-12">
             <p>
               Já tem uma conta?{' '}
-              <Link to="/login" className="underline font-semibold">
+              <Link
+                to="/login"
+                className="underline font-semibold text-primary-500"
+              >
                 Entre aqui.
               </Link>
             </p>
