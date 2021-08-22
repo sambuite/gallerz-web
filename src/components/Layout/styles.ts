@@ -1,9 +1,6 @@
-import styled, { css } from 'styled-components';
+// import styled, { css } from 'styled-components';
+import tw from 'tailwind-styled-components';
 
-export const Container = styled.div(({ theme }) => css``);
+export const Container = tw.div``;
 
-export const Content = styled.div(
-  ({ theme }) => css`
-    margin: 5rem 3rem;
-  `,
-);
+export const Content = tw.div``;
