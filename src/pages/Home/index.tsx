@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import Layout from '../../components/Layout';
+import ProductModal from '../../components/ProductModal';
 
 const Home = () => {
+  const [productModalOpen, setProductModalOpen] = useState(false);
+
   return (
     <Layout>
       <div className="w-auto m-auto">
@@ -9,7 +13,10 @@ const Home = () => {
             {Array(50)
               .fill('https://source.unsplash.com/collection/9387510')
               .map((e, i) => (
-                <div className="hover:opacity-80 transition-all cursor-pointer">
+                <div
+                  className="hover:opacity-80 transition-all cursor-pointer"
+                  onClick={() => setProductModalOpen(true)}
+                >
                   <img src={e} alt="Imagem" className="rounded-sm" />
                 </div>
               ))}
@@ -18,7 +25,10 @@ const Home = () => {
             {Array(50)
               .fill('https://source.unsplash.com/collection/49553154')
               .map((e, i) => (
-                <div className="hover:opacity-80 transition-all cursor-pointer">
+                <div
+                  className="hover:opacity-80 transition-all cursor-pointer"
+                  onClick={() => setProductModalOpen(true)}
+                >
                   <img src={e} alt="Imagem" className="rounded-sm" />
                 </div>
               ))}
@@ -27,7 +37,10 @@ const Home = () => {
             {Array(50)
               .fill('https://source.unsplash.com/collection/11668382')
               .map((e, i) => (
-                <div className="hover:opacity-80 transition-all cursor-pointer">
+                <div
+                  className="hover:opacity-80 transition-all cursor-pointer"
+                  onClick={() => setProductModalOpen(true)}
+                >
                   <img src={e} alt="Imagem" className="rounded-sm" />
                 </div>
               ))}
@@ -36,13 +49,20 @@ const Home = () => {
             {Array(50)
               .fill('https://source.unsplash.com/collection/9368333')
               .map((e, i) => (
-                <div className="hover:opacity-80 transition-all cursor-pointer">
+                <div
+                  className="hover:opacity-80 transition-all cursor-pointer"
+                  onClick={() => setProductModalOpen(true)}
+                >
                   <img src={e} alt="Imagem" className="rounded-sm" />
                 </div>
               ))}
           </div>
         </div>
       </div>
+      <ProductModal
+        open={productModalOpen}
+        onClose={() => setProductModalOpen(false)}
+      />
     </Layout>
   );
 };
