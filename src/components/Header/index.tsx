@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const Header = () => {
   const navCollapseRef = useRef<HTMLDivElement>(null);
@@ -8,6 +10,8 @@ const Header = () => {
     navCollapseRef.current?.classList.toggle('hidden');
     navCollapseRef.current?.classList.toggle('flex');
   };
+
+  const { authenticated, handleLogout } = useContext(AuthContext);
 
   return (
     <nav className="bg-white py-4 mb-5">
@@ -52,23 +56,36 @@ const Header = () => {
             Início
           </Link>
           <Link
-            to="#"
+            to="/shopping-cart"
             className="p-2 lg:px-4 mx-2 text-gray-600 hover:font-bold hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"
           >
-            Sobre
+            Carrinho
           </Link>
-          <Link
-            to="/login"
-            className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-transparent hover:bg-primary-500 hover:text-white transition-colors duration-300"
-          >
-            Entrar
-          </Link>
-          <Link
-            to="/register"
-            className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-solid border-primary-600 hover:bg-primary-600 hover:text-white transition-colors duration-300"
-          >
-            Cadastrar-se
-          </Link>
+          {!authenticated ? (
+            <>
+              <Link
+                to="/login"
+                className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-transparent hover:bg-primary-500 hover:text-white transition-colors duration-300"
+              >
+                Entrar
+              </Link>
+              <Link
+                to="/register"
+                className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-solid border-primary-600 hover:bg-primary-600 hover:text-white transition-colors duration-300"
+              >
+                Cadastrar-se
+              </Link>
+            </>
+          ) : (
+            <div
+              className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-transparent hover:underline transition-colors duration-300 cursor-pointer"
+              onClick={() => {
+                handleLogout();
+              }}
+            >
+              Sair
+            </div>
+          )}
         </div>
       </div>
     </nav>
