@@ -1,13 +1,60 @@
 import ReactDOM from 'react-dom';
-import { ModalProps } from './types';
+import { ProductModalProps } from './types';
+import history from '../../history';
 
 import * as S from './styles';
+import { toCurrency } from '../../shared/utils';
+import { shoppingCartStorage } from '../../storage/ShoppingCart';
+import { useState } from 'react';
+import { ProductToBuyType } from '../../shared/types';
 
-export default function Modal({ open, onClose }: ModalProps) {
+export default function Modal({ open, onClose, product }: ProductModalProps) {
+  const [quantity, setQuantity] = useState(1);
+  const [type, setType] = useState(0);
+
+  const [typeError, setTypeError] = useState(false);
+
   if (!open) return null;
 
-  const handleTypeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('event', e.target.value);
+  const handleGetProductQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(Number(e.target.value) || 1);
+  };
+
+  const handleGetProductType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTypeError(false);
+    setType(Number(e.target.value));
+  };
+
+  const checkIfTypeSelected = () => {
+    if (typeof type !== 'number') {
+      setTypeError(true);
+      return true;
+    }
+    return false;
+  };
+
+  const addProductToShoppingCart = () => {
+    if (checkIfTypeSelected()) return;
+
+    const storageProduct = shoppingCartStorage.get() as ProductToBuyType[];
+
+    const updatedProduct = {
+      ...product,
+      quantity,
+      type,
+    };
+
+    shoppingCartStorage.set(
+      storageProduct ? [...storageProduct, updatedProduct] : [updatedProduct],
+    );
+    onClose();
+  };
+
+  const buyProductNow = () => {
+    if (checkIfTypeSelected()) return;
+
+    addProductToShoppingCart();
+    history.push('/shopping-cart');
   };
 
   return ReactDOM.createPortal(
@@ -35,65 +82,41 @@ export default function Modal({ open, onClose }: ModalProps) {
           <div className="flex p-1">
             <div className="flex-none w-44 relative">
               <img
-                src="https://images.unsplash.com/photo-1575995872537-3793d29d972c?auto=format&fit=crop&w=365&q=80"
+                src={product.imageUrl}
                 alt="Imagem do produto"
                 className=" inset-0 w-full h-full object-contain"
               />
             </div>
-            <form className="flex-auto py-7 px-8">
+            <div className="flex-auto py-7 px-8">
               <div className="flex flex-wrap items-baseline">
                 <h1 className="w-full flex-none text-3xl text-black mb-1.5">
-                  Arte 01
+                  {product.name}
                 </h1>
-                <div className="text-lg leading-6 text-black">R$600.00</div>
+                <div className="text-lg leading-6 text-black">
+                  {toCurrency(product.price)}
+                </div>
               </div>
-              <div className="flex items-start justify-between mt-9 py-9 border-t border-gray-100">
-                <div className="flex space-x-10 text-sm font-light text-black">
+              <div className="flex items-start mt-9 py-9 border-t border-gray-100">
+                <div className="flex space-x-10 text-sm font-light text-black mr-6">
                   <label>
                     <input
-                      className="w-5 h-5 flex items-center justify-center rounded-full"
-                      name="size"
-                      type="radio"
-                      value="p"
+                      className="w-12 h-auto px-1 py-3.5 flex items-center justify-center border border-gray-500"
+                      name="quantity"
+                      type="number"
+                      onChange={handleGetProductQuantity}
+                      defaultValue={1}
                     />
-                    P
-                  </label>
-                  <label>
-                    <input
-                      className="w-5 h-5 flex items-center justify-center rounded-full"
-                      name="size"
-                      type="radio"
-                      value="m"
-                    />
-                    M
-                  </label>
-                  <label>
-                    <input
-                      className="w-5 h-5 flex items-center justify-center rounded-full"
-                      name="size"
-                      type="radio"
-                      value="g"
-                    />
-                    G
-                  </label>
-                  <label>
-                    <input
-                      className="w-5 h-5 flex items-center justify-center rounded-full"
-                      name="size"
-                      type="radio"
-                      value="gg"
-                    />
-                    GG
                   </label>
                 </div>
                 <div className="flex space-x-10 text-sm font-light text-black">
                   <select
-                    onChange={handleTypeSelection}
+                    onChange={handleGetProductType}
                     className="block p-3 text-gray-600 w-full text-base border border-gray-500 bg-white "
                   >
-                    <option value="mug">Caneca</option>
-                    <option value="canvas">Quadro/Placa</option>
-                    <option value="shirt">Camisa</option>
+                    <option value="x">Escolha um tipo</option>
+                    <option value="0">Caneca</option>
+                    <option value="1">Quadro/Placa</option>
+                    <option value="2">Camisa</option>
                   </select>
                 </div>
               </div>
@@ -101,22 +124,26 @@ export default function Modal({ open, onClose }: ModalProps) {
                 <div className="flex-auto flex space-x-3">
                   <button
                     className="w-1/2 py-2 flex items-center justify-center bg-primary-500 text-white hover:bg-primary-600 transition"
-                    type="submit"
+                    type="button"
+                    onClick={buyProductNow}
                   >
                     Comprar
                   </button>
                   <button
                     className="w-1/2 py-2 flex items-center justify-center border text-primary-500 border-primary-500 hover:text-white hover:bg-primary-500 transition"
                     type="button"
+                    onClick={addProductToShoppingCart}
                   >
                     Adicionar ao Carrinho
                   </button>
                 </div>
               </div>
-              {/* <p className="text-sm text-gray-500">
-              Descrição
-            </p> */}
-            </form>
+              {typeError && (
+                <p className="text-sm font-bold text-red-500">
+                  Você precisa selecionar um tipo.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </S.Modal>

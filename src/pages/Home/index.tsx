@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 import ProductModal from '../../components/ProductModal';
+import { ProductType } from '../../shared/types';
 
 const mock = [
   {
@@ -81,6 +82,9 @@ const mock = [
 
 const Home = () => {
   const [productModalOpen, setProductModalOpen] = useState(false);
+  const [productSelected, setProductSelected] = useState<ProductType>(
+    {} as ProductType,
+  );
   const [productsState, setProductsState] = useState([mock]);
 
   useEffect(() => {
@@ -109,7 +113,10 @@ const Home = () => {
                 <div
                   key={product.id}
                   className="hover:opacity-80 transition-all cursor-pointer"
-                  onClick={() => setProductModalOpen(true)}
+                  onClick={() => {
+                    setProductSelected(product);
+                    setProductModalOpen(true);
+                  }}
                 >
                   <img
                     src={product.imageUrl}
@@ -125,6 +132,7 @@ const Home = () => {
       <ProductModal
         open={productModalOpen}
         onClose={() => setProductModalOpen(false)}
+        product={productSelected}
       />
     </Layout>
   );

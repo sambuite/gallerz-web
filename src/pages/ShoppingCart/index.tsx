@@ -1,10 +1,7 @@
+import { Link } from 'react-router-dom';
 import Layout from '../../components/Layout';
 
 const ShoppingCart = () => {
-  const handleDeliverySelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('event', e.target.value);
-  };
-
   return (
     <Layout>
       <div className="container mx-auto mt-10">
@@ -28,6 +25,7 @@ const ShoppingCart = () => {
                 Total
               </h3>
             </div>
+
             <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
               <div className="flex w-2/5">
                 <div className="w-20">
@@ -176,8 +174,8 @@ const ShoppingCart = () => {
               </span>
             </div>
 
-            <a
-              href="#"
+            <Link
+              to="/"
               className="flex font-semibold text-green-600 text-sm mt-10"
             >
               <svg
@@ -187,7 +185,7 @@ const ShoppingCart = () => {
                 <path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" />
               </svg>
               Continuar Comprando
-            </a>
+            </Link>
           </div>
 
           <div id="summary" className="w-auto lg:w-1/4 px-8 py-10 bg-gray-100">
@@ -203,7 +201,7 @@ const ShoppingCart = () => {
                 Entrega
               </label>
               <select
-                onChange={handleDeliverySelection}
+                onChange={() => {}}
                 className="block p-2 text-gray-600 w-full text-sm bg-white "
               >
                 <option value={10}>Entrega Padrão - R$10.00</option>
