@@ -1,9 +1,5 @@
 import { ProductType } from '../../shared/types';
-
-export type ModalProps = {
-  open: boolean;
-  onClose: () => void;
-};
+import { ModalProps } from '../../shared/types/modal';
 
 export type ProductModalProps = ModalProps & {
   product: ProductType;

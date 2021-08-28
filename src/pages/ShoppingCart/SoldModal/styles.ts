@@ -3,17 +3,7 @@ import tw from 'tailwind-styled-components';
 
 const StyledModal = styled.div`
   transform: translate(-50%, -50%);
-  min-width: 50rem;
-
-  @media screen and (max-width: 1024px) {
-    min-width: 70%;
-  }
-  @media screen and (max-width: 768px) {
-    min-width: 90%;
-  }
-  /* @media screen and (max-width: 640px) {
-    min-width: 50%;
-  } */
+  min-width: 20rem;
 `;
 
 export const Modal = tw(StyledModal)`
@@ -21,7 +11,7 @@ export const Modal = tw(StyledModal)`
   top-2/4
   left-2/4
   bg-white
-  p-12
+  p-8
   z-50
 `;
 

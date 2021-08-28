@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 const Header = () => {
@@ -11,11 +11,13 @@ const Header = () => {
     navCollapseRef.current?.classList.toggle('flex');
   };
 
+  const { pathname } = useLocation();
+
   const { authenticated, handleLogout } = useContext(AuthContext);
 
   return (
     <nav className="bg-white py-4 mb-5">
-      <div className="container px-4 mx-auto md:flex md:items-center">
+      <div className="w-auto px-4 mx-auto md:flex md:items-center">
         <div className="flex justify-between items-center">
           <Link
             to="/"
@@ -51,13 +53,21 @@ const Header = () => {
         >
           <Link
             to="/"
-            className="text-gray-600 mx-2 font-bold bg-gray-200 text-md p-2 lg:px-4"
+            className={
+              pathname === '/'
+                ? 'text-gray-600 font-bold bg-gray-200 text-md p-2'
+                : 'p-2 md:ml-3 text-gray-600 hover:font-bold hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300'
+            }
           >
             Início
           </Link>
           <Link
             to="/shopping-cart"
-            className="p-2 lg:px-4 mx-2 text-gray-600 hover:font-bold hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"
+            className={
+              pathname === '/shopping-cart'
+                ? 'text-gray-600 font-bold bg-gray-200 text-md p-2'
+                : 'p-2 md:ml-3 text-gray-600 hover:font-bold hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300'
+            }
           >
             Carrinho
           </Link>
@@ -65,13 +75,13 @@ const Header = () => {
             <>
               <Link
                 to="/login"
-                className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-transparent hover:bg-primary-500 hover:text-white transition-colors duration-300"
+                className="p-2 md:ml-3 text-primary-600 text-center border border-transparent hover:bg-primary-500 hover:text-white transition-colors duration-300"
               >
                 Entrar
               </Link>
               <Link
                 to="/register"
-                className="p-2 lg:px-4 mx-2 text-primary-600 text-center border border-solid border-primary-600 hover:bg-primary-600 hover:text-white transition-colors duration-300"
+                className="p-2 md:ml-3 text-primary-600 text-center border border-solid border-primary-600 hover:bg-primary-600 hover:text-white transition-colors duration-300"
               >
                 Cadastrar-se
               </Link>

@@ -10,11 +10,16 @@ import { ProductToBuyType } from '../../shared/types';
 
 export default function Modal({ open, onClose, product }: ProductModalProps) {
   const [quantity, setQuantity] = useState(1);
-  const [type, setType] = useState(0);
+  const [type, setType] = useState<number | undefined>(undefined);
 
   const [typeError, setTypeError] = useState(false);
 
   if (!open) return null;
+
+  const resetDetails = () => {
+    setQuantity(1);
+    setType(undefined);
+  };
 
   const handleGetProductQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(Number(e.target.value) || 1);
@@ -48,12 +53,14 @@ export default function Modal({ open, onClose, product }: ProductModalProps) {
       storageProduct ? [...storageProduct, updatedProduct] : [updatedProduct],
     );
     onClose();
+    resetDetails();
   };
 
   const buyProductNow = () => {
     if (checkIfTypeSelected()) return;
 
     addProductToShoppingCart();
+    resetDetails();
     history.push('/shopping-cart');
   };
 
@@ -63,7 +70,7 @@ export default function Modal({ open, onClose, product }: ProductModalProps) {
       <S.Modal>
         <div className="flex flex-col">
           <div
-            className="-mr-6 flex flex-row-reverse cursor-pointer"
+            className="-mr-1 md:-mr-6 flex flex-row-reverse cursor-pointer"
             onClick={onClose}
           >
             <svg
@@ -79,7 +86,7 @@ export default function Modal({ open, onClose, product }: ProductModalProps) {
               />
             </svg>
           </div>
-          <div className="flex p-1">
+          <div className="flex flex-col items-center md:flex-row p-1">
             <div className="flex-none w-44 relative">
               <img
                 src={product.imageUrl}
@@ -121,16 +128,16 @@ export default function Modal({ open, onClose, product }: ProductModalProps) {
                 </div>
               </div>
               <div className="flex space-x-3 mb-3 text-sm font-semibold uppercase">
-                <div className="flex-auto flex space-x-3">
+                <div className="flex flex-col items-center md:items-start md:flex-row flex-auto md:space-x-3">
                   <button
-                    className="w-1/2 py-2 flex items-center justify-center bg-primary-500 text-white hover:bg-primary-600 transition"
+                    className="w-full md:w-1/2 py-2 flex items-center justify-center bg-primary-500 text-white hover:bg-primary-600 transition"
                     type="button"
                     onClick={buyProductNow}
                   >
                     Comprar
                   </button>
                   <button
-                    className="w-1/2 py-2 flex items-center justify-center border text-primary-500 border-primary-500 hover:text-white hover:bg-primary-500 transition"
+                    className="w-full md:w-1/2 mt-4 md:mt-0 py-2 flex items-center justify-center border text-primary-500 border-primary-500 hover:text-white hover:bg-primary-500 transition"
                     type="button"
                     onClick={addProductToShoppingCart}
                   >

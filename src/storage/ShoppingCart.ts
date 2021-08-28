@@ -1,3 +1,5 @@
+import { ProductToBuyType } from '../shared/types';
+
 const SHOPPING_CART_KEY = '@shopping-cart';
 
 export const shoppingCartStorage = {
@@ -5,7 +7,7 @@ export const shoppingCartStorage = {
     const val = typeof value === 'string' ? value : JSON.stringify(value);
     localStorage.setItem(SHOPPING_CART_KEY, val);
   },
-  get() {
+  get(): ProductToBuyType[] | null {
     const storaged = localStorage.getItem(SHOPPING_CART_KEY);
     return storaged ? JSON.parse(storaged) : storaged;
   },
