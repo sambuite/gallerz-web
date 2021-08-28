@@ -3,7 +3,10 @@ export type ProductType = {
   name: string;
   imageUrl: string;
   price: number;
-  userId: string;
+  user: {
+    id: string;
+    name: string;
+  };
 };
 
 export type ProductToBuyType = ProductType & {

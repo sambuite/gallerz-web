@@ -11,9 +11,6 @@ const StyledModal = styled.div`
   @media screen and (max-width: 768px) {
     min-width: 90%;
   }
-  /* @media screen and (max-width: 640px) {
-    min-width: 50%;
-  } */
 `;
 
 export const Modal = tw(StyledModal)`

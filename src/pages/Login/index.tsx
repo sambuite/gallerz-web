@@ -1,13 +1,16 @@
 import React, { useContext, useState } from 'react';
-import * as S from './styles';
 import { AuthContext } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { handleLogin } = useContext(AuthContext);
+
+  const { search } = useLocation();
+
+  const hasToGoShoppingCart = search.includes('checkout=true');
 
   const handleChangeEmail = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
@@ -26,9 +29,12 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await handleLogin({ email, password });
+      await handleLogin(
+        { email, password },
+        hasToGoShoppingCart ? '/shopping-cart' : undefined,
+      );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

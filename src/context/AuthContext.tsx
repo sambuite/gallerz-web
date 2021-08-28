@@ -6,19 +6,21 @@ export type LoginType = { email: string; password: string };
 
 type AuthContextType = {
   loading: boolean;
+  userId: string;
   authenticated: boolean;
-  handleLogin: (email: LoginType) => Promise<void>;
+  handleLogin: (email: LoginType, to?: string) => Promise<void>;
   handleLogout: () => void;
 };
 
 const AuthContext = createContext({} as AuthContextType);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { authenticated, loading, handleLogin, handleLogout } = useAuth();
+  const { userId, authenticated, loading, handleLogin, handleLogout } =
+    useAuth();
 
   return (
     <AuthContext.Provider
-      value={{ loading, authenticated, handleLogin, handleLogout }}
+      value={{ userId, loading, authenticated, handleLogin, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

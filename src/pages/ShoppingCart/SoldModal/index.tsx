@@ -1,11 +1,15 @@
 import ReactDOM from 'react-dom';
 import history from '../../../history';
-import { ModalProps } from '../../../shared/types/modal';
+import { SoldModalProps } from './types';
 import { shoppingCartStorage } from '../../../storage/ShoppingCart';
 
 import * as S from './styles';
 
-export default function SoldModal({ open = true, onClose }: ModalProps) {
+export default function SoldModal({
+  open = true,
+  onClose,
+  error,
+}: SoldModalProps) {
   if (!open) return null;
 
   const goBack = () => {
@@ -20,16 +24,28 @@ export default function SoldModal({ open = true, onClose }: ModalProps) {
       <S.Modal>
         <div className="flex flex-col items-center">
           <div className="flex items-center justify-center">
-            <span className="text-green-500 font-bold">
-              Sua compra foi realizada com sucesso!
+            <span
+              className={
+                (error ? 'text-red-500 text-center' : 'text-green-500') +
+                ' font-bold whitespace-pre-line'
+              }
+            >
+              {error
+                ? 'Ocorreu um erro na sua compra! \n Tente novamente mais tarde.'
+                : 'Sua compra foi realizada com sucesso!'}
             </span>
           </div>
           <button
-            className="text-green-500 hover:text-white p-2 mt-5 border border-green-500 hover:bg-green-500"
+            className={
+              (error
+                ? 'text-red-500 border-red-500 hover:bg-red-500'
+                : 'text-green-500 border-green-500 hover:bg-green-500') +
+              ' hover:text-white p-2 mt-5 border '
+            }
             type="button"
-            onClick={goBack}
+            onClick={error ? () => onClose() : () => goBack()}
           >
-            Voltar à pagina inical
+            Voltar
           </button>
         </div>
       </S.Modal>

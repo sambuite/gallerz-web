@@ -55,7 +55,7 @@ const Header = () => {
             to="/"
             className={
               pathname === '/'
-                ? 'text-gray-600 font-bold bg-gray-200 text-md p-2'
+                ? 'text-gray-600 md:ml-3 font-bold bg-gray-200 text-md p-2'
                 : 'p-2 md:ml-3 text-gray-600 hover:font-bold hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300'
             }
           >
@@ -65,7 +65,7 @@ const Header = () => {
             to="/shopping-cart"
             className={
               pathname === '/shopping-cart'
-                ? 'text-gray-600 font-bold bg-gray-200 text-md p-2'
+                ? 'text-gray-600 md:ml-3 font-bold bg-gray-200 text-md p-2'
                 : 'p-2 md:ml-3 text-gray-600 hover:font-bold hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300'
             }
           >

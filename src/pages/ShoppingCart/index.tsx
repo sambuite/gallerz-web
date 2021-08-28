@@ -1,17 +1,22 @@
 import { useEffect } from 'react';
+import { useContext } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../../components/Layout';
+import { AuthContext } from '../../context/AuthContext';
+import api from '../../services/api';
 import { ProductToBuyType } from '../../shared/types';
 import { toCurrency } from '../../shared/utils';
 import { shoppingCartStorage } from '../../storage/ShoppingCart';
 import SoldModal from './SoldModal';
+import history from '../../history';
 
 const ShoppingCart = () => {
   const [openSoldModal, setOpenSoldModal] = useState(false);
   const [shoppingCart, setShoppingCart] = useState([] as ProductToBuyType[]);
+  const [buyError, setBuyError] = useState(false);
 
-  console.log('ShoppingCart', shoppingCart);
+  const { userId, authenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const storagedCart = shoppingCartStorage.get();
@@ -21,7 +26,6 @@ const ShoppingCart = () => {
     const updatedStoragedCart = [] as ProductToBuyType[];
 
     storagedCart.forEach((product) => {
-      console.log('product', product);
       const existing = updatedStoragedCart.filter(
         (productStoraged) =>
           productStoraged.id === product.id &&
@@ -88,7 +92,7 @@ const ShoppingCart = () => {
     productId: string,
     productType: number,
   ) => {
-    if (Number(value) !== NaN)
+    if (!isNaN(Number(value)))
       setShoppingCart((old) =>
         old.map((e) => {
           if (e.id === productId && e.type === productType)
@@ -118,6 +122,35 @@ const ShoppingCart = () => {
           .map((e) => e.price * e.quantity)
           .reduce((acc, nxt) => acc + nxt)
       : 0;
+
+  const checkoutOrder = async () => {
+    if (!authenticated) {
+      history.push('/login?checkout=true');
+      return;
+    }
+
+    setBuyError(false);
+
+    try {
+      await api.post('/register-order', {
+        userId,
+        status: 0,
+        products: shoppingCart.map(({ id, type, price, quantity }) => ({
+          id,
+          type,
+          price,
+          quantity,
+        })),
+      });
+
+      setOpenSoldModal(true);
+      shoppingCartStorage.remove();
+    } catch (error) {
+      console.error(error.message);
+      setBuyError(true);
+      setOpenSoldModal(true);
+    }
+  };
 
   return (
     <Layout>
@@ -158,7 +191,7 @@ const ShoppingCart = () => {
                       {product.name} - {handleShowType(product.type)}
                     </span>
                     <span className="text-red-500 text-xs">
-                      {product.userId}
+                      {product.user.name}
                     </span>
                     <div
                       className="font-semibold hover:text-red-500 text-gray-500 text-xs cursor-pointer"
@@ -276,7 +309,7 @@ const ShoppingCart = () => {
                     : 'bg-green-500 hover:bg-green-600 text-white'
                 } `}
                 onClick={() => {
-                  setOpenSoldModal(true);
+                  checkoutOrder();
                 }}
               >
                 Comprar
@@ -290,6 +323,7 @@ const ShoppingCart = () => {
         onClose={() => {
           setOpenSoldModal(false);
         }}
+        error={buyError}
       />
     </Layout>
   );

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import * as S from './styles';
 import api from '../../services/api';
 import history from '../../history';
 import { Link } from 'react-router-dom';

@@ -6,6 +6,7 @@ import { LoginType } from '../AuthContext';
 export default function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     const auth = localStorage.getItem('@auth');
@@ -13,18 +14,20 @@ export default function useAuth() {
     if (auth) {
       api.defaults.headers.Authorization = `Bearer ${JSON.parse(auth).token}`;
       setAuthenticated(true);
+
+      setUserId(JSON.parse(auth).userId);
     }
 
     setLoading(false);
   }, []);
 
-  async function handleLogin(login: LoginType) {
+  async function handleLogin(login: LoginType, to?: string) {
     const { data } = await api.post('/login', { ...login });
 
     localStorage.setItem('@auth', JSON.stringify(data));
     api.defaults.headers.Authorization = `Bearer ${data.token}`;
     setAuthenticated(true);
-    history.push('/');
+    history.push(to || '/');
   }
 
   function handleLogout() {
@@ -34,5 +37,5 @@ export default function useAuth() {
     history.push('/login');
   }
 
-  return { authenticated, loading, handleLogin, handleLogout };
+  return { userId, authenticated, loading, handleLogin, handleLogout };
 }
