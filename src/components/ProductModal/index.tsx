@@ -31,15 +31,13 @@ export default function Modal({ open, onClose, product }: ProductModalProps) {
   };
 
   const checkIfTypeSelected = () => {
-    if (typeof type !== 'number') {
-      setTypeError(true);
-      return true;
-    }
+    if (typeof type === 'number') return true;
+    setTypeError(true);
     return false;
   };
 
   const addProductToShoppingCart = () => {
-    if (checkIfTypeSelected()) return;
+    if (!checkIfTypeSelected()) return;
 
     const storageProduct = shoppingCartStorage.get() as ProductToBuyType[];
 
